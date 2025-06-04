@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import QuotationForm from '../components/QuotationForm';
 import QuotePreview from '../components/QuotePreview';
@@ -27,6 +26,15 @@ export interface Cabinet {
   quantity: number;
   unitPrice: number;
   totalPrice: number;
+  shelves?: number;
+  drawers?: number;
+  drslider?: number;
+  roundbar?: number;
+  hinges?: number;
+  handle?: number;
+  aluframe?: number;
+  wheelset?: number;
+  labourHours?: number;
 }
 
 const Index = () => {

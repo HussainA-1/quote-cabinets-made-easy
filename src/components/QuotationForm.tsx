@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,7 +30,16 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
       doorType: '',
       quantity: 1,
       unitPrice: 0,
-      totalPrice: 0
+      totalPrice: 0,
+      shelves: 0,
+      drawers: 0,
+      drslider: 0,
+      roundbar: 0,
+      hinges: 0,
+      handle: 0,
+      aluframe: 0,
+      wheelset: 0,
+      labourHours: 0
     }
   ]);
 
@@ -44,12 +52,10 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
   ];
 
   const materials = [
-    'Solid Wood - Oak',
-    'Solid Wood - Maple',
-    'Solid Wood - Cherry',
-    'Plywood - Birch',
-    'MDF - Painted',
-    'Laminate'
+    'MDF',
+    'Melamine HD',
+    'Melamine EG',
+    'PVC'
   ];
 
   const finishes = [
@@ -71,8 +77,10 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
   ];
 
   const doorTypes = [
+    'No Doors',
     'Normal Doors',
-    'Sliding Doors'
+    'Sliding Doors',
+    'Glass Doors'
   ];
 
   const updateCabinet = (index: number, field: keyof Cabinet, value: any) => {
@@ -80,7 +88,7 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
     updatedCabinets[index] = { ...updatedCabinets[index], [field]: value };
     
     // Recalculate prices when relevant fields change
-    if (['type', 'width', 'height', 'depth', 'material', 'finish', 'hardware', 'doorType', 'quantity'].includes(field)) {
+    if (['type', 'width', 'height', 'depth', 'material', 'finish', 'hardware', 'doorType', 'quantity', 'shelves', 'drawers', 'drslider', 'roundbar', 'hinges', 'handle', 'aluframe', 'wheelset', 'labourHours'].includes(field)) {
       const cabinet = updatedCabinets[index];
       const unitPrice = calculateCabinetPrice(cabinet);
       updatedCabinets[index].unitPrice = unitPrice;
@@ -103,7 +111,16 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
       doorType: '',
       quantity: 1,
       unitPrice: 0,
-      totalPrice: 0
+      totalPrice: 0,
+      shelves: 0,
+      drawers: 0,
+      drslider: 0,
+      roundbar: 0,
+      hinges: 0,
+      handle: 0,
+      aluframe: 0,
+      wheelset: 0,
+      labourHours: 0
     };
     setCabinets([...cabinets, newCabinet]);
   };
@@ -208,6 +225,7 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
             </div>
           </CardHeader>
           <CardContent className="p-6 space-y-4">
+            {/* Basic Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
                 <Label>Cabinet Type *</Label>
@@ -236,19 +254,6 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
                 </Select>
               </div>
               <div>
-                <Label>Finish *</Label>
-                <Select onValueChange={(value) => updateCabinet(index, 'finish', value)}>
-                  <SelectTrigger className="mt-1">
-                    <SelectValue placeholder="Select finish" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {finishes.map((finish) => (
-                      <SelectItem key={finish} value={finish}>{finish}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
                 <Label>Door Type</Label>
                 <Select onValueChange={(value) => updateCabinet(index, 'doorType', value)}>
                   <SelectTrigger className="mt-1">
@@ -261,9 +266,21 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
                   </SelectContent>
                 </Select>
               </div>
+              <div>
+                <Label htmlFor={`quantity-${index}`}>Quantity</Label>
+                <Input
+                  id={`quantity-${index}`}
+                  type="number"
+                  value={cabinet.quantity}
+                  onChange={(e) => updateCabinet(index, 'quantity', parseInt(e.target.value) || 1)}
+                  className="mt-1"
+                  min="1"
+                />
+              </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {/* Dimensions */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               <div>
                 <Label htmlFor={`width-${index}`}>Width (inches) *</Label>
                 <Input
@@ -297,42 +314,125 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
                   placeholder="12"
                 />
               </div>
+            </div>
+
+            {/* Components */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
-                <Label htmlFor={`quantity-${index}`}>Quantity</Label>
+                <Label htmlFor={`shelves-${index}`}>Shelves</Label>
                 <Input
-                  id={`quantity-${index}`}
+                  id={`shelves-${index}`}
                   type="number"
-                  value={cabinet.quantity}
-                  onChange={(e) => updateCabinet(index, 'quantity', parseInt(e.target.value) || 1)}
+                  value={cabinet.shelves || 0}
+                  onChange={(e) => updateCabinet(index, 'shelves', parseInt(e.target.value) || 0)}
                   className="mt-1"
-                  min="1"
+                  min="0"
+                />
+              </div>
+              <div>
+                <Label htmlFor={`drawers-${index}`}>Drawers</Label>
+                <Input
+                  id={`drawers-${index}`}
+                  type="number"
+                  value={cabinet.drawers || 0}
+                  onChange={(e) => updateCabinet(index, 'drawers', parseInt(e.target.value) || 0)}
+                  className="mt-1"
+                  min="0"
+                />
+              </div>
+              <div>
+                <Label htmlFor={`hinges-${index}`}>Hinges</Label>
+                <Input
+                  id={`hinges-${index}`}
+                  type="number"
+                  value={cabinet.hinges || 0}
+                  onChange={(e) => updateCabinet(index, 'hinges', parseInt(e.target.value) || 0)}
+                  className="mt-1"
+                  min="0"
+                />
+              </div>
+              <div>
+                <Label htmlFor={`handle-${index}`}>Handles</Label>
+                <Input
+                  id={`handle-${index}`}
+                  type="number"
+                  value={cabinet.handle || 0}
+                  onChange={(e) => updateCabinet(index, 'handle', parseInt(e.target.value) || 0)}
+                  className="mt-1"
+                  min="0"
+                />
+              </div>
+            </div>
+
+            {/* Accessories */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div>
+                <Label htmlFor={`drslider-${index}`}>DrSlider 40cm</Label>
+                <Input
+                  id={`drslider-${index}`}
+                  type="number"
+                  value={cabinet.drslider || 0}
+                  onChange={(e) => updateCabinet(index, 'drslider', parseInt(e.target.value) || 0)}
+                  className="mt-1"
+                  min="0"
+                />
+              </div>
+              <div>
+                <Label htmlFor={`roundbar-${index}`}>Round Bar (m)</Label>
+                <Input
+                  id={`roundbar-${index}`}
+                  type="number"
+                  value={cabinet.roundbar || 0}
+                  onChange={(e) => updateCabinet(index, 'roundbar', parseInt(e.target.value) || 0)}
+                  className="mt-1"
+                  min="0"
+                />
+              </div>
+              <div>
+                <Label htmlFor={`aluframe-${index}`}>Aluminium Frame</Label>
+                <Input
+                  id={`aluframe-${index}`}
+                  type="number"
+                  value={cabinet.aluframe || 0}
+                  onChange={(e) => updateCabinet(index, 'aluframe', parseInt(e.target.value) || 0)}
+                  className="mt-1"
+                  min="0"
+                />
+              </div>
+              <div>
+                <Label htmlFor={`wheelset-${index}`}>Wheelset</Label>
+                <Input
+                  id={`wheelset-${index}`}
+                  type="number"
+                  value={cabinet.wheelset || 0}
+                  onChange={(e) => updateCabinet(index, 'wheelset', parseInt(e.target.value) || 0)}
+                  className="mt-1"
+                  min="0"
                 />
               </div>
             </div>
 
             <div>
-              <Label>Hardware</Label>
-              <Select onValueChange={(value) => updateCabinet(index, 'hardware', value)}>
-                <SelectTrigger className="mt-1">
-                  <SelectValue placeholder="Select hardware" />
-                </SelectTrigger>
-                <SelectContent>
-                  {hardwareOptions.map((hardware) => (
-                    <SelectItem key={hardware} value={hardware}>{hardware}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Label htmlFor={`labour-${index}`}>Labour Hours</Label>
+              <Input
+                id={`labour-${index}`}
+                type="number"
+                value={cabinet.labourHours || 0}
+                onChange={(e) => updateCabinet(index, 'labourHours', parseInt(e.target.value) || 0)}
+                className="mt-1"
+                min="0"
+              />
             </div>
 
             {cabinet.unitPrice > 0 && (
               <div className="bg-slate-50 p-4 rounded-lg">
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-slate-600">Unit Price:</span>
-                  <span className="font-semibold">${cabinet.unitPrice.toFixed(2)}</span>
+                  <span className="font-semibold">{cabinet.unitPrice.toFixed(2)} SAR</span>
                 </div>
                 <div className="flex justify-between items-center mt-1">
                   <span className="text-sm text-slate-600">Total Price:</span>
-                  <span className="font-bold text-lg text-blue-600">${cabinet.totalPrice.toFixed(2)}</span>
+                  <span className="font-bold text-lg text-blue-600">{cabinet.totalPrice.toFixed(2)} SAR</span>
                 </div>
               </div>
             )}

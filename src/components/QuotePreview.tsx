@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, Download, Send, Eye } from 'lucide-react';
 import { QuoteData } from '../pages/Index';
+import { calculateBasePrice, getSheetCount } from '../utils/PriceCalculator';
 
 interface QuotePreviewProps {
   quoteData: QuoteData;
@@ -123,7 +124,7 @@ const QuotePreview: React.FC<QuotePreviewProps> = ({ quoteData, onBack }) => {
                       <th className="border border-slate-300 p-3 text-left font-medium">Item</th>
                       <th className="border border-slate-300 p-3 text-left font-medium">Dimensions</th>
                       <th className="border border-slate-300 p-3 text-left font-medium">Door Type</th>
-                      <th className="border border-slate-300 p-3 text-left font-medium">Hardware</th>
+                      <th className="border border-slate-300 p-3 text-left font-medium">Components</th>
                       <th className="border border-slate-300 p-3 text-center font-medium">Qty</th>
                       <th className="border border-slate-300 p-3 text-right font-medium">Total Price (SAR)</th>
                     </tr>
@@ -134,7 +135,6 @@ const QuotePreview: React.FC<QuotePreviewProps> = ({ quoteData, onBack }) => {
                         <td className="border border-slate-300 p-3">
                           <div className="font-medium">{cabinet.type}</div>
                           <div className="text-sm text-slate-600">{cabinet.material}</div>
-                          <div className="text-sm text-slate-600">{cabinet.finish}</div>
                         </td>
                         <td className="border border-slate-300 p-3">
                           <div className="text-sm">
@@ -145,7 +145,12 @@ const QuotePreview: React.FC<QuotePreviewProps> = ({ quoteData, onBack }) => {
                           <div className="text-sm">{cabinet.doorType || 'Standard'}</div>
                         </td>
                         <td className="border border-slate-300 p-3">
-                          <div className="text-sm">{cabinet.hardware || 'Standard'}</div>
+                          <div className="text-sm space-y-1">
+                            {(cabinet.shelves || 0) > 0 && <div>Shelves: {cabinet.shelves}</div>}
+                            {(cabinet.drawers || 0) > 0 && <div>Drawers: {cabinet.drawers}</div>}
+                            {(cabinet.hinges || 0) > 0 && <div>Hinges: {cabinet.hinges}</div>}
+                            {(cabinet.handle || 0) > 0 && <div>Handles: {cabinet.handle}</div>}
+                          </div>
                         </td>
                         <td className="border border-slate-300 p-3 text-center">{cabinet.quantity}</td>
                         <td className="border border-slate-300 p-3 text-right font-medium">
@@ -156,13 +161,14 @@ const QuotePreview: React.FC<QuotePreviewProps> = ({ quoteData, onBack }) => {
                   </tbody>
                 </table>
               ) : (
-                // Factory View - Detailed table with base price and metric units
+                // Factory View - Detailed table with base price, sheets needed, and metric units
                 <table className="w-full border-collapse border border-slate-300">
                   <thead>
                     <tr className="bg-slate-50">
                       <th className="border border-slate-300 p-3 text-left font-medium">Item</th>
-                      <th className="border border-slate-300 p-3 text-left font-medium">Dimensions (m)</th>
-                      <th className="border border-slate-300 p-3 text-left font-medium">Specifications</th>
+                      <th className="border border-slate-300 p-3 text-left font-medium">Dimensions (m/cm)</th>
+                      <th className="border border-slate-300 p-3 text-left font-medium">Components</th>
+                      <th className="border border-slate-300 p-3 text-center font-medium">Sheets</th>
                       <th className="border border-slate-300 p-3 text-center font-medium">Qty</th>
                       <th className="border border-slate-300 p-3 text-right font-medium">Base Price (SAR)</th>
                       <th className="border border-slate-300 p-3 text-right font-medium">Total (SAR)</th>
@@ -173,6 +179,7 @@ const QuotePreview: React.FC<QuotePreviewProps> = ({ quoteData, onBack }) => {
                       <tr key={cabinet.id} className="hover:bg-slate-25">
                         <td className="border border-slate-300 p-3">
                           <div className="font-medium">{cabinet.type}</div>
+                          <div className="text-sm text-slate-600">{cabinet.material}</div>
                           <div className="text-sm text-slate-600">ID: {cabinet.id}</div>
                         </td>
                         <td className="border border-slate-300 p-3">
@@ -184,14 +191,21 @@ const QuotePreview: React.FC<QuotePreviewProps> = ({ quoteData, onBack }) => {
                         </td>
                         <td className="border border-slate-300 p-3">
                           <div className="text-sm space-y-1">
-                            <p><strong>Material:</strong> {cabinet.material}</p>
-                            <p><strong>Finish:</strong> {cabinet.finish}</p>
-                            <p><strong>Door Type:</strong> {cabinet.doorType || 'Standard'}</p>
-                            <p><strong>Hardware:</strong> {cabinet.hardware || 'Standard'}</p>
+                            <p><strong>Door:</strong> {cabinet.doorType || 'Standard'}</p>
+                            {(cabinet.shelves || 0) > 0 && <p>Shelves: {cabinet.shelves}</p>}
+                            {(cabinet.drawers || 0) > 0 && <p>Drawers: {cabinet.drawers}</p>}
+                            {(cabinet.drslider || 0) > 0 && <p>DrSlider: {cabinet.drslider}</p>}
+                            {(cabinet.roundbar || 0) > 0 && <p>Round Bar: {cabinet.roundbar}m</p>}
+                            {(cabinet.hinges || 0) > 0 && <p>Hinges: {cabinet.hinges}</p>}
+                            {(cabinet.handle || 0) > 0 && <p>Handles: {cabinet.handle}</p>}
+                            {(cabinet.aluframe || 0) > 0 && <p>Alu Frame: {cabinet.aluframe}</p>}
+                            {(cabinet.wheelset || 0) > 0 && <p>Wheelset: {cabinet.wheelset}</p>}
+                            {(cabinet.labourHours || 0) > 0 && <p>Labour: {cabinet.labourHours}h</p>}
                           </div>
                         </td>
+                        <td className="border border-slate-300 p-3 text-center">{getSheetCount(cabinet)}</td>
                         <td className="border border-slate-300 p-3 text-center">{cabinet.quantity}</td>
-                        <td className="border border-slate-300 p-3 text-right">{cabinet.unitPrice.toFixed(2)} SAR</td>
+                        <td className="border border-slate-300 p-3 text-right">{calculateBasePrice(cabinet).toFixed(2)} SAR</td>
                         <td className="border border-slate-300 p-3 text-right font-medium">
                           {cabinet.totalPrice.toFixed(2)} SAR
                         </td>
