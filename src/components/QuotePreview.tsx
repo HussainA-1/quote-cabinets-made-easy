@@ -2,9 +2,10 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, Download, Send, Eye } from 'lucide-react';
+import { ArrowLeft, Download, Send, Eye, FileExport } from 'lucide-react';
 import { QuoteData } from '../pages/Index';
 import { calculateBasePrice, getSheetCount } from '../utils/PriceCalculator';
+import FactoryExport from './FactoryExport';
 
 interface QuotePreviewProps {
   quoteData: QuoteData;
@@ -12,10 +13,14 @@ interface QuotePreviewProps {
 }
 
 const QuotePreview: React.FC<QuotePreviewProps> = ({ quoteData, onBack }) => {
-  const [viewMode, setViewMode] = useState<'sales' | 'factory'>('sales');
+  const [viewMode, setViewMode] = useState<'sales' | 'factory' | 'export'>('sales');
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleFactoryExport = () => {
+    setViewMode('export');
   };
 
   // Convert inches to centimeters
@@ -23,6 +28,36 @@ const QuotePreview: React.FC<QuotePreviewProps> = ({ quoteData, onBack }) => {
   
   // Convert inches to meters (for display)
   const inchesToM = (inches: number) => (inches * 0.0254).toFixed(2);
+
+  if (viewMode === 'export') {
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+          <Button
+            onClick={() => setViewMode('sales')}
+            variant="outline"
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Quote
+          </Button>
+          
+          <div className="flex gap-2">
+            <Button
+              onClick={handlePrint}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <Download className="h-4 w-4" />
+              Print Factory Order
+            </Button>
+          </div>
+        </div>
+        
+        <FactoryExport quoteData={quoteData} />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -57,6 +92,15 @@ const QuotePreview: React.FC<QuotePreviewProps> = ({ quoteData, onBack }) => {
               Factory View
             </Button>
           </div>
+          
+          <Button
+            onClick={handleFactoryExport}
+            variant="outline"
+            className="flex items-center gap-2 bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200"
+          >
+            <FileExport className="h-4 w-4" />
+            Export to Factory
+          </Button>
           
           <Button
             onClick={handlePrint}
