@@ -19,7 +19,7 @@ const FactoryExport: React.FC<FactoryExportProps> = ({ quoteData }) => {
       <div className="mb-8">
         <div className="flex justify-between items-start mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900 mb-2">Cabinet Pro</h1>
+            <h1 className="text-3xl font-bold text-slate-900 mb-2">Alasfour Furniture</h1>
             <h2 className="text-xl text-slate-700">Factory Production Order</h2>
           </div>
           <div className="text-right">

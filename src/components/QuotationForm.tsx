@@ -282,7 +282,8 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
             {/* Dimensions */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               <div>
-                <Label htmlFor={`width-${index}`}>Width (inches) *</Label>
+                <Label htmlFor={`width-${index}`}>Width (
+                  ) *</Label>
                 <Input
                   id={`width-${index}`}
                   type="number"
@@ -293,7 +294,7 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
                 />
               </div>
               <div>
-                <Label htmlFor={`height-${index}`}>Height (inches) *</Label>
+                <Label htmlFor={`height-${index}`}>Height (CM) *</Label>
                 <Input
                   id={`height-${index}`}
                   type="number"
@@ -304,7 +305,7 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
                 />
               </div>
               <div>
-                <Label htmlFor={`depth-${index}`}>Depth (inches) *</Label>
+                <Label htmlFor={`depth-${index}`}>Depth (CM) *</Label>
                 <Input
                   id={`depth-${index}`}
                   type="number"
@@ -319,7 +320,7 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
             {/* Components */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
-                <Label htmlFor={`shelves-${index}`}>Shelves</Label>
+                <Label htmlFor={`shelves-${index}`}>Shelves (QTY) </Label>
                 <Input
                   id={`shelves-${index}`}
                   type="number"
@@ -330,7 +331,7 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
                 />
               </div>
               <div>
-                <Label htmlFor={`drawers-${index}`}>Drawers</Label>
+                <Label htmlFor={`drawers-${index}`}>Drawers (QTY) </Label>
                 <Input
                   id={`drawers-${index}`}
                   type="number"
@@ -341,7 +342,7 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
                 />
               </div>
               <div>
-                <Label htmlFor={`hinges-${index}`}>Hinges</Label>
+                <Label htmlFor={`hinges-${index}`}>Hinges (QTY) </Label>
                 <Input
                   id={`hinges-${index}`}
                   type="number"
@@ -352,7 +353,7 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
                 />
               </div>
               <div>
-                <Label htmlFor={`handle-${index}`}>Handles</Label>
+                <Label htmlFor={`handle-${index}`}>Handles (QTY) </Label>
                 <Input
                   id={`handle-${index}`}
                   type="number"
@@ -378,7 +379,7 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
                 />
               </div>
               <div>
-                <Label htmlFor={`roundbar-${index}`}>Round Bar (m)</Label>
+                <Label htmlFor={`roundbar-${index}`}>Round Bar (M)</Label>
                 <Input
                   id={`roundbar-${index}`}
                   type="number"
@@ -455,7 +456,7 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
         <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-blue-200">
           <div className="text-right">
             <p className="text-sm text-slate-600">Total Quote Amount</p>
-            <p className="text-2xl font-bold text-blue-600">${calculateTotalPrice().toFixed(2)}</p>
+            <p className="text-2xl font-bold text-blue-600">SAR{calculateTotalPrice().toFixed(2)}</p>
           </div>
         </div>
       </div>
