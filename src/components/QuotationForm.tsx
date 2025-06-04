@@ -28,6 +28,7 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
       material: '',
       finish: '',
       hardware: '',
+      doorType: '',
       quantity: 1,
       unitPrice: 0,
       totalPrice: 0
@@ -69,12 +70,17 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
     'Handle - Chrome'
   ];
 
+  const doorTypes = [
+    'Normal Doors',
+    'Sliding Doors'
+  ];
+
   const updateCabinet = (index: number, field: keyof Cabinet, value: any) => {
     const updatedCabinets = [...cabinets];
     updatedCabinets[index] = { ...updatedCabinets[index], [field]: value };
     
     // Recalculate prices when relevant fields change
-    if (['type', 'width', 'height', 'depth', 'material', 'finish', 'hardware', 'quantity'].includes(field)) {
+    if (['type', 'width', 'height', 'depth', 'material', 'finish', 'hardware', 'doorType', 'quantity'].includes(field)) {
       const cabinet = updatedCabinets[index];
       const unitPrice = calculateCabinetPrice(cabinet);
       updatedCabinets[index].unitPrice = unitPrice;
@@ -94,6 +100,7 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
       material: '',
       finish: '',
       hardware: '',
+      doorType: '',
       quantity: 1,
       unitPrice: 0,
       totalPrice: 0
@@ -201,7 +208,7 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
             </div>
           </CardHeader>
           <CardContent className="p-6 space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
                 <Label>Cabinet Type *</Label>
                 <Select onValueChange={(value) => updateCabinet(index, 'type', value)}>
@@ -237,6 +244,19 @@ const QuotationForm: React.FC<QuotationFormProps> = ({ onQuoteGenerated }) => {
                   <SelectContent>
                     {finishes.map((finish) => (
                       <SelectItem key={finish} value={finish}>{finish}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Door Type</Label>
+                <Select onValueChange={(value) => updateCabinet(index, 'doorType', value)}>
+                  <SelectTrigger className="mt-1">
+                    <SelectValue placeholder="Select door type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {doorTypes.map((doorType) => (
+                      <SelectItem key={doorType} value={doorType}>{doorType}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

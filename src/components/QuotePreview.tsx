@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -121,6 +122,7 @@ const QuotePreview: React.FC<QuotePreviewProps> = ({ quoteData, onBack }) => {
                     <tr className="bg-slate-50">
                       <th className="border border-slate-300 p-3 text-left font-medium">Item</th>
                       <th className="border border-slate-300 p-3 text-left font-medium">Dimensions</th>
+                      <th className="border border-slate-300 p-3 text-left font-medium">Door Type</th>
                       <th className="border border-slate-300 p-3 text-left font-medium">Hardware</th>
                       <th className="border border-slate-300 p-3 text-center font-medium">Qty</th>
                       <th className="border border-slate-300 p-3 text-right font-medium">Total Price (SAR)</th>
@@ -140,6 +142,9 @@ const QuotePreview: React.FC<QuotePreviewProps> = ({ quoteData, onBack }) => {
                           </div>
                         </td>
                         <td className="border border-slate-300 p-3">
+                          <div className="text-sm">{cabinet.doorType || 'Standard'}</div>
+                        </td>
+                        <td className="border border-slate-300 p-3">
                           <div className="text-sm">{cabinet.hardware || 'Standard'}</div>
                         </td>
                         <td className="border border-slate-300 p-3 text-center">{cabinet.quantity}</td>
@@ -157,7 +162,7 @@ const QuotePreview: React.FC<QuotePreviewProps> = ({ quoteData, onBack }) => {
                     <tr className="bg-slate-50">
                       <th className="border border-slate-300 p-3 text-left font-medium">Item</th>
                       <th className="border border-slate-300 p-3 text-left font-medium">Dimensions (m)</th>
-                      <th className="border border-slate-300 p-3 text-left font-medium">Material & Finish</th>
+                      <th className="border border-slate-300 p-3 text-left font-medium">Specifications</th>
                       <th className="border border-slate-300 p-3 text-center font-medium">Qty</th>
                       <th className="border border-slate-300 p-3 text-right font-medium">Base Price (SAR)</th>
                       <th className="border border-slate-300 p-3 text-right font-medium">Total (SAR)</th>
@@ -181,6 +186,7 @@ const QuotePreview: React.FC<QuotePreviewProps> = ({ quoteData, onBack }) => {
                           <div className="text-sm space-y-1">
                             <p><strong>Material:</strong> {cabinet.material}</p>
                             <p><strong>Finish:</strong> {cabinet.finish}</p>
+                            <p><strong>Door Type:</strong> {cabinet.doorType || 'Standard'}</p>
                             <p><strong>Hardware:</strong> {cabinet.hardware || 'Standard'}</p>
                           </div>
                         </td>

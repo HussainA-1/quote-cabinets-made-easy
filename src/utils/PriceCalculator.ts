@@ -37,6 +37,11 @@ const hardwarePricing = {
   'Handle - Chrome': 20
 };
 
+const doorTypePricing = {
+  'Normal Doors': 0,
+  'Sliding Doors': 75
+};
+
 export const calculateCabinetPrice = (cabinet: Cabinet): number => {
   if (!cabinet.type || !cabinet.width || !cabinet.height || !cabinet.depth || !cabinet.material) {
     return 0;
@@ -57,8 +62,11 @@ export const calculateCabinetPrice = (cabinet: Cabinet): number => {
   // Add hardware cost
   const hardwareCost = hardwarePricing[cabinet.hardware as keyof typeof hardwarePricing] || 0;
   
+  // Add door type cost
+  const doorTypeCost = doorTypePricing[cabinet.doorType as keyof typeof doorTypePricing] || 0;
+  
   // Calculate final price
-  const finalPrice = (basePrice * sizeFactor * materialMultiplier) + finishCost + hardwareCost;
+  const finalPrice = (basePrice * sizeFactor * materialMultiplier) + finishCost + hardwareCost + doorTypeCost;
   
   return Math.round(finalPrice * 100) / 100; // Round to 2 decimal places
 };

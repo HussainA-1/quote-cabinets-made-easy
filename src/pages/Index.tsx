@@ -23,6 +23,7 @@ export interface Cabinet {
   material: string;
   finish: string;
   hardware: string;
+  doorType: string;
   quantity: number;
   unitPrice: number;
   totalPrice: number;
